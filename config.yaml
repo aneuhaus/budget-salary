@@ -1,0 +1,24 @@
+currency: BRL
+tax_rate: 0.275
+budget:
+  rent: 3700
+  condo_FLN: 1450
+  condo_PEL: 800
+  food: 1000
+  power_FLN: 120
+  power_PEL: 50
+  internet_PEL: 90
+  internet_FLN: 150
+  cell_phone: 50
+  google_workspace: 100
+  nebula: 30
+  pharmacy: 300
+  health_insurance: 600
+  car_insurance: 200
+  transportation: 150
+  leisure: 800
+  subscriptions: 150
+  gym: 400
+  clothes: 200
+  emergency_fund: 500
+  desired_savings: 2000
