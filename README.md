@@ -1,6 +1,6 @@
 # 💰 Multi-Currency Budget & Salary Calculator
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Shell Script](https://img.shields.io/badge/shell-bash-4EAA25.svg)](https://www.gnu.org/software/bash/)
 [![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](#)
 
@@ -87,4 +87,4 @@ The script calculates your target income using the following logic:
 
 ## 📄 License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
