@@ -1,94 +1,92 @@
-# Multi-Currency Budget & Salary Calculator
+# 💰 Multi-Currency Budget & Salary Calculator
 
-Cross-platform CLI tool to calculate pre-tax salary requirements based on net expenses and live market rates.
+![Budget Salary Banner](budget_salary_banner.png)
 
-## Features
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Shell Script](https://img.shields.io/badge/shell-bash-4EAA25.svg)](https://www.gnu.org/software/bash/)
+[![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](#)
 
-* **YAML-based Configuration:** Manage your monthly expenses in a clean, human-readable format.
-* **Live Exchange Rates:** Fetches real-time data from the ExchangeRate API to convert your target salary to USD.
-* **Dynamic Currency Support:** Set your base currency (BRL, EUR, etc.) in the config and the script adjusts automatically.
-* **Dependency Validation:** Automatically checks for required CLI tools before running.
+A cross-platform CLI tool designed for international contractors and digital nomads to calculate pre-tax salary requirements based on net expenses and real-time market exchange rates.
 
-## Prerequisites
+## ✨ Features
 
-The script requires the following tools:
+*   **🔒 YAML-based Configuration:** Keep your budget private and organized in a human-readable format.
+*   **🌍 Live Exchange Rates:** Automatically fetches the latest USD rates from the ExchangeRate API.
+*   **📈 Dynamic Calculations:** Automatically accounts for income tax gross-up for any currency.
+*   **🚀 One-Command Setup:** Dependency validation and auto-installation for macOS and Linux.
 
-* `yq`: To parse YAML configuration.
-* `jq`: To parse JSON API responses.
-* `bc`: For high-precision floating-point math.
-* `curl`: To fetch exchange rates.
+## 🚀 Quick Start
 
-### Installation
+### 1. Installation
+Clone the repository and ensure the script is executable:
 
-**macOS:**
-
-```bash
-brew install yq jq bc
-
-```
-
-**Linux (Ubuntu/Debian):**
-
-```bash
-sudo apt update
-sudo apt install yq jq bc curl
-
-```
-
-## Configuration
-
-Create a `config.yaml` file in the root directory. You can define your local currency, your income tax bracket, and a list of expenses.
-
-```yaml
-currency: BRL       # Your local currency (defaults to BRL)
-tax_rate: 0.275     # e.g., 27.5% expressed as 0.275
-budget:
-  rent: 3700
-  food: 1000
-  internet: 150
-  health_insurance: 600
-  desired_savings: 2000
-
-```
-
-## Usage
-
-1. **Clone the repository:**
 ```bash
 git clone https://github.com/yourusername/budget-salary.git
 cd budget-salary
-
-```
-
-
-2. **Make the script executable:**
-```bash
 chmod +x bdgt.sh
-
 ```
 
+### 2. Configure Your Budget
+Create your personal configuration from the template:
 
-3. **Run the script:**
 ```bash
-# Uses config.yaml by default
-./bdgt.sh
-
-# Or specify a custom config file
-./bdgt.sh my_september_budget.yaml
-
+cp config.example.yaml config.yaml
 ```
 
+Then edit `config.yaml` with your details:
 
+```yaml
+currency: BRL       # Your local currency (e.g., EUR, BRL, JPY)
+tax_rate: 0.275     # Your effective income tax rate (e.g., 27.5% = 0.275)
+budget:
+  rent: 3700
+  food: 1000
+  health_insurance: 600
+  desired_savings: 2000
+```
 
-## How it Works
+### 3. Run it
+```bash
+./bdgt.sh
+```
 
-The script follows a specific mathematical flow to determine your target income:
+## 🖥️ Example Output
 
-1. **Summation:** It aggregates all values under the `budget` key in your YAML.
-2. **Gross-up:** It calculates the required gross salary before taxes using the formula:
-$$Salary_{Gross} = \frac{\sum (Budget\ Items)}{1 - Tax\ Rate}$$
-3. **Conversion:** It fetches the current exchange rate and calculates the final value for international billing or comparison.
+When you run the script, you'll see a clean breakdown of your financial requirements:
+
+```text
+Budget Calculator v0.1 - 12 Jan 2026
+------------------------------------------
+Base Currency:    BRL
+Total Budget:     12840.00 BRL
+Gross Salary:     17710.34 BRL
+Gross Salary USD: $ 3294.12
+------------------------------------------
+```
+
+## 🛠️ Prerequisites
+
+The script utilizes standard Unix utilities. If missing, *it will attempt to install them*:
+*   `yq`: High-level YAML processor.
+*   `jq`: Lightweight JSON processor for API data.
+*   `bc`: Arbitrary precision calculator for math.
+*   `curl`: To fetch real-time exchange data.
+
+## 🧮 How it Works
+
+The script calculates your target income using the following logic:
+
+1.  **Aggregation**: Sums all line items under the `budget` key in your configuration.
+2.  **Gross-up Formula**: Calculates the gross salary required to cover net expenses after taxes.
+    $$\text{Salary}_{\text{Gross}} = \frac{\sum (\text{Budget Items})}{1 - \text{Tax Rate}}$$
+3.  **Currency Conversion**: Fetches the current exchange rate (`BASE` → `USD`) to provide a global benchmark.
+
+## ⚠️ Troubleshooting
+
+*   **API Error**: If the exchange rate API is unreachable, the script uses a fallback rate (0.18 for BRL/USD).
+*   **Permission Denied**: Run `chmod +x bdgt.sh` to allow the script to execute.
+*   **Wait, where is my currency?**: Check [ExchangeRate-API supported codes](https://www.exchangerate-api.com/docs/supported-currencies) to ensure your `currency` key is correct.
 
 ## 📄 License
 
-MIT
+Distributed under the MIT License. See `LICENSE` for more information.

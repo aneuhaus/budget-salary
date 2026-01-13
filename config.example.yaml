@@ -1,0 +1,7 @@
+currency: BRL       # Your local currency (e.g., EUR, BRL, JPY)
+tax_rate: 0.275     # Your effective income tax rate (e.g., 27.5% = 0.275)
+budget:
+  rent: 3700
+  food: 1000
+  health_insurance: 600
+  desired_savings: 2000

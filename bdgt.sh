@@ -1,6 +1,24 @@
 #!/bin/bash
 
-# --- 1. OS Detection & Dependency Auto-Installer ---
+# --- 1. Help Information ---
+show_help() {
+    echo "Usage: ./bdgt.sh [CONFIG_FILE]"
+    echo ""
+    echo "Calculate gross salary requirements based on net expenses and real-time exchange rates."
+    echo ""
+    echo "Options:"
+    echo "  -h, --help    Show this help message and exit"
+    echo ""
+    echo "Defaults to 'config.yaml' if no file is provided."
+    exit 0
+}
+
+# Check for help flag
+if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    show_help
+fi
+
+# --- 2. OS Detection & Dependency Auto-Installer ---
 install_dependencies() {
     OS_TYPE="$(uname -s)"
     
@@ -44,15 +62,6 @@ install_dependencies() {
     esac
 }
 
-# --- 2. File Opener Helper ---
-open_file() {
-    case "$(uname -s)" in
-        Darwin) open "$1" ;;       # macOS
-        Linux)  xdg-open "$1" ;;   # Linux (Ubuntu, Fedora, etc.)
-        *)      echo "Manual: Open $1 to view." ;;
-    esac
-}
-
 # Run the installer check
 install_dependencies
 
@@ -60,12 +69,13 @@ install_dependencies
 CONFIG_FILE="${1:-config.yaml}"
 if [[ ! -f "$CONFIG_FILE" ]]; then
     echo "Error: Config file '$CONFIG_FILE' not found."
+    echo "Try: cp config.example.yaml config.yaml"
     exit 1
 fi
 
 BASE_CURRENCY=$(yq '.currency // "BRL"' "$CONFIG_FILE")
 TAX_RATE=$(yq '.tax_rate // 0' "$CONFIG_FILE")
-TOTAL_BUDGET=$(yq '.budget[]' "$CONFIG_FILE" | paste -sd+ - | bc)
+TOTAL_BUDGET=$(yq '.budget | to_entries | map(.value) | join("+")' "$CONFIG_FILE" | bc)
 DESIRED_SALARY_BASE=$(echo "scale=2; $TOTAL_BUDGET / (1 - $TAX_RATE)" | bc -l)
 
 # Fetch Exchange Rate
@@ -81,8 +91,8 @@ DESIRED_SALARY_USD=$(echo "scale=2; $DESIRED_SALARY_BASE * $EXCHANGE_RATE" | bc 
 # --- 4. Output ---
 echo "Budget Calculator v0.1 - $(date +"%d %b %Y")"
 echo "------------------------------------------"
-echo "Base Currency:    $BASE_CURRENCY"
-echo "Total Budget:     $TOTAL_BUDGET $BASE_CURRENCY"
-echo "Gross Salary:     $DESIRED_SALARY_BASE $BASE_CURRENCY"
-echo "Gross Salary USD: \$ $DESIRED_SALARY_USD"
+printf "Base Currency:    %s\n" "$BASE_CURRENCY"
+printf "Total Budget:     %.2f %s\n" "$TOTAL_BUDGET" "$BASE_CURRENCY"
+printf "Gross Salary:     %.2f %s\n" "$DESIRED_SALARY_BASE" "$BASE_CURRENCY"
+printf "Gross Salary USD: $ %.2f\n" "$DESIRED_SALARY_USD"
 echo "------------------------------------------"
