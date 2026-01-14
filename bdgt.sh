@@ -79,7 +79,7 @@ TOTAL_BUDGET=$(yq '.budget | to_entries | map(.value) | join("+")' "$CONFIG_FILE
 DESIRED_SALARY_BASE=$(echo "scale=2; $TOTAL_BUDGET / (1 - $TAX_RATE)" | bc -l)
 
 # Fetch Exchange Rate
-EXCHANGE_RATE=$(curl -s "https://api.exchangerate-api.com/v4/latest/${BASE_CURRENCY}" | jq -r '.rates.USD // empty')
+EXCHANGE_RATE=$(curl -s "https://open.er-api.com/v6/latest/${BASE_CURRENCY}" | jq -r '.rates.USD // empty')
 
 if [[ -z "$EXCHANGE_RATE" ]]; then
     EXCHANGE_RATE="0.18"
